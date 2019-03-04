@@ -1,0 +1,49 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "AWS Cloudformation template to start an S3 bucket.",
+
+    "Parameters": {
+        "Region": {
+            "Description": "The AWS region this is running in",
+            "Type": "String",
+            "Default": "eu-west-1"
+        }
+    },
+
+    "Resources": {
+
+        "WebsiteBucket": {
+            "Type" : "AWS::S3::Bucket",
+            "Properties": {
+                "AccessControl" : "PublicRead",
+                "BucketName": "sto-psito-test",
+                "WebsiteConfiguration" : {
+                    "IndexDocument" : "index.html",
+                    "ErrorDocument" : "error.html"
+                }
+            },
+            "DeletionPolicy" : "Delete"
+        },
+
+        "ReservationsTable": {
+            "Type" : "AWS::DynamoDB::Table",
+            "Properties" : {
+                "TableName" : "Reservations",
+                "BillingMode" : "PAY_PER_REQUEST",
+                "AttributeDefinitions" : [
+                    {
+                        "AttributeName" : "ID",
+                        "AttributeType" : "S" 
+                    }
+                ],
+                "KeySchema" : [
+                    {
+                        "AttributeName": "ID",
+                        "KeyType": "HASH"
+                    }
+                ],
+            }
+        }
+
+    }
+}
