@@ -1,6 +1,12 @@
 .DS_Store
 ./idea/
-./code/.idea/
-./code/gradle/
-./code/.gradle/
-./code/gradlew.bat
+code/.idea/
+code/gradle/
+code/.gradle/
+code/gradlew.bat
+code/build/
+code/*.lock
+code/*.bin
+code/.gradletasknamecahe
+code/out/
+code/.gradletasknamecache
