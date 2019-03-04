@@ -6,6 +6,7 @@ repositories {
 
 dependencies {
     compile group: 'com.amazonaws', name: 'aws-java-sdk-lambda', version: '1.11.510'
+    compile group: 'com.amazonaws', name: 'aws-java-sdk-dynamodb', version: '1.11.510'
 }
 
 task buildZip(type: Zip) {
