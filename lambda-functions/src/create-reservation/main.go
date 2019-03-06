@@ -21,7 +21,6 @@ type ReservationRequest struct {
 
 type ReservationResponse struct {
 	Id string`json:"id"`
-	Timestamp int64`json:"timestamp"`
 }
 
 type Reservation struct {
@@ -78,7 +77,7 @@ func Handler(request ReservationRequest) (ReservationResponse, error) {
 		panic(fmt.Errorf("could not save reservation to Dyanmo %s", saveError))
 	}
 
-	return ReservationResponse{Id: fmt.Sprintf("%s", reservation.Id), Timestamp: reservation.Timestamp,}, nil
+	return ReservationResponse{Id: fmt.Sprintf("%s", reservation.Id),}, nil
 }
 
 func main() {
