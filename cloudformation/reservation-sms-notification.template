@@ -1,0 +1,28 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "AWS Cloudformation template to create SAM for Sto Psito",
+
+    "Parameters": {
+        "Region": {
+            "Description": "The AWS region this is running in",
+            "Type": "String",
+            "Default": "eu-west-1"
+        }
+    },
+
+    "Resources": {
+
+        "ReservationNotification": {
+            "Type" : "AWS::SNS::Topic",
+            "Properties": {
+                "DisplayName": "StoPsitoReservationSmsNotification",
+                "Subscription": [{
+                    "Endpoint": "+4407784840967",
+                    "Protocol": "sms"
+                }]
+            }
+        }
+
+    }
+
+}
