@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/sns"
+	"github.com/aws/aws-sdk-go/service/sqs"
 )
 
 type Reservation struct {
@@ -23,15 +23,15 @@ type Reservation struct {
 
 func publishReservationEvent(reservation Reservation) {
 	dynamoDbSession, _ := session.NewSession(&aws.Config{ Region: aws.String("eu-west-1")}, )
-	svc := sns.New(dynamoDbSession)
+	svc := sqs.New(dynamoDbSession)
 	reservationJson, _ := json.Marshal(reservation)
-	params := &sns.PublishInput{
-		Message: aws.String(string(reservationJson)),
-		TopicArn: aws.String("arn:aws:sns:eu-west-1:896764428848:test-topic"),
-	}
+	queueUrl := "https://sqs.eu-west-1.amazonaws.com/896764428848/reservations-queue"
 
-	fmt.Printf("Publishing Reservation Event for object %s", string(reservationJson))
-	result, err := svc.Publish(params)
+	result, err := svc.SendMessage(&sqs.SendMessageInput{
+		MessageBody: aws.String(string(reservationJson)),
+		QueueUrl: &queueUrl,
+	})
+
 	if err != nil {
 		panic(err)
 	}
