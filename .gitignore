@@ -2,3 +2,4 @@
 ./idea/
 lambda-functions/.idea
 lambda-functions/lambda-functions.iml
+*.zip

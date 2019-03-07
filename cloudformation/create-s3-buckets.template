@@ -1,0 +1,25 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Creates the S3 bucket to upload all the Lambda code",
+
+    "Parameters": {
+        "Region": {
+            "Description": "The AWS region this is running in",
+            "Type": "String",
+            "Default": "eu-west-1"
+        }
+    },
+
+    "Resources": {
+
+        "CodeBucket": {
+            "Type": "AWS::S3::Bucket",
+            "Properties": {
+                "AccessControl": "PublicRead",
+                "BucketName": "sto-psito-lambda-functions"
+            },
+            "DeletionPolicy" : "Delete"
+        }
+
+    }
+}
