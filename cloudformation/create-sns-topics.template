@@ -1,0 +1,83 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Creates SNS topics and corresponding Lambda functions.",
+
+    "Parameters": {
+        "Region": {
+            "Description": "The AWS region this is running in",
+            "Type": "String",
+            "Default": "eu-west-1"
+        },
+    },
+
+    "Resources": {
+
+        "ReservationsTopic": {
+            "Type" : "AWS::SNS::Topic",
+            "Properties": {
+                "DisplayName": "Reservations Topic",
+                "TopicName": "reservations-topic"
+            }
+        },
+
+        "SendSmsFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+                "Code": {
+                    "S3Bucket": "sto-psito-lambda-functions",
+                    "S3Key": "send-sms.zip"
+                },
+                "FunctionName": "SendSmsConfirmation",
+                "Handler": "main",
+                "Role": "arn:aws:iam::896764428848:role/sto-psito-lambda-role",
+                "Runtime": "go1.x"
+            }
+        },
+
+        "SendSmsFunctionPermission": {
+            "Type" : "AWS::Lambda::Permission",
+            "Properties": {
+                "Action": "lambda:InvokeFunction",
+                "Principal": "sns.amazonaws.com",
+                "FunctionName": {
+                    "Fn::GetAtt": ["SendSmsFunction", "Arn"]
+                },
+                "SourceArn": {
+                    "Fn::Join": ["", ["arn:aws:sns:", {"Ref": "AWS::Region"}, ":", {"Ref": "AWS::AccountId"}, ":", {"Fn::GetAtt": ["ReservationsTopic", "TopicName"]}]]
+                }
+            },
+            "DependsOn": ["SendSmsFunction"]
+        },
+
+        "SendConfirmationEmailsFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+                "Code": {
+                    "S3Bucket": "sto-psito-lambda-functions",
+                    "S3Key": "send-confirmation-emails.zip"
+                },
+                "FunctionName": "SendEmailConfirmation",
+                "Handler": "main",
+                "Role": "arn:aws:iam::896764428848:role/sto-psito-lambda-role",
+                "Runtime": "go1.x"
+            }
+        },
+
+        "SendConfirmationEmailsPermission": {
+            "Type" : "AWS::Lambda::Permission",
+            "Properties": {
+                "Action": "lambda:InvokeFunction",
+                "Principal": "sns.amazonaws.com",
+                "FunctionName": {
+                    "Fn::GetAtt": ["SendConfirmationEmailsFunction", "Arn"]
+                },
+                "SourceArn": {
+                    "Fn::Join": ["", ["arn:aws:sns:", {"Ref": "AWS::Region"}, ":", {"Ref": "AWS::AccountId"}, ":reservations-topic", {"Fn::GetAtt": ["ReservationsTopic", "TopicName"]}]]
+                }
+            },
+            "DependsOn": ["SendConfirmationEmailsFunction"]
+        }
+
+    }
+
+}
