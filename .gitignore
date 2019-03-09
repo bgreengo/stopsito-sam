@@ -3,3 +3,8 @@
 lambda-functions/.idea
 lambda-functions/lambda-functions.iml
 *.zip
+lambda-functions/bin/
+lambda-functions/pkg/
+lambda-functions/src/github.com
+lambda-functions/src/golang.org
+lambda-functions/src/gopkg.in
