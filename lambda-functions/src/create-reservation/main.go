@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
-	"github.com/satori/go.uuid"
+	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
-	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/satori/go.uuid"
 )
 
 type ReservationRequest struct {
@@ -66,7 +66,7 @@ func saveReservationToDynamo(request ReservationRequest) (Reservation, error) {
 	return reservation, err
 }
 
-func Handler(request ReservationRequest) (ReservationResponse, error) {
+func handler(request ReservationRequest) (ReservationResponse, error) {
 	if isRequestMissingRequiredFields(request) {
 		panic("request is missing mandatory fields")
 	}
@@ -81,5 +81,5 @@ func Handler(request ReservationRequest) (ReservationResponse, error) {
 }
 
 func main() {
-	lambda.Start(Handler)
+	lambda.Start(handler)
 }
