@@ -64,10 +64,10 @@ func sendConfirmationSms(reservation Reservation) {
 	}
 }
 
-func handler(ctx context.Context, sqsEvent events.SQSEvent)  {
-	for _, message := range sqsEvent.Records {
+func handler(ctx context.Context, snsEvent events.SNSEvent)  {
+	for _, r := range snsEvent.Records{
 		reservation := Reservation{}
-		err := json.Unmarshal([]byte(message.Body), &reservation)
+		err := json.Unmarshal([]byte(r.SNS.Message), &reservation)
 		if err != nil {
 			panic(err)
 		}
