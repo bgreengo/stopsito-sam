@@ -10,6 +10,8 @@ Last year, the website had:
 
 The total cost of running the website and the reservation system came to **$0**. This project wants to make the case that small businesses can run succesfull and profitable websites without having to spend a lot of money (if any at all!).
 
+Currently, users can only make a reservation but not ammend it or cancel it. This repo is going to be updated as these features roll out over time.
+
 ## SAM Architecture
 The SAM reservation system consists of 4 processes:
 1. User interaction with the website (Reservation Request),
