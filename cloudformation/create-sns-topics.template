@@ -7,7 +7,7 @@
             "Description": "The AWS region this is running in",
             "Type": "String",
             "Default": "eu-west-1"
-        },
+        }
     },
 
     "Resources": {
@@ -31,7 +31,8 @@
                 "Handler": "main",
                 "Role": "arn:aws:iam::896764428848:role/sto-psito-lambda-role",
                 "Runtime": "go1.x"
-            }
+            },
+            "DependsOn": ["ReservationsTopic"]
         },
 
         "SendSmsFunctionPermission": {
@@ -43,8 +44,18 @@
                     "Fn::GetAtt": ["SendSmsFunction", "Arn"]
                 },
                 "SourceArn": {
-                    "Fn::Join": ["", ["arn:aws:sns:", {"Ref": "AWS::Region"}, ":", {"Ref": "AWS::AccountId"}, ":reservations-topic"]]
+                    "Fn::Join": ["", ["arn:aws:sns:", {"Ref": "AWS::Region"}, ":", {"Ref": "AWS::AccountId"}, ":", {"Fn::GetAtt": [ "ReservationsTopic", "TopicName" ]}]]
                 }
+            },
+            "DependsOn": ["SendSmsFunction"]
+        },
+
+        "SendSmsSubscription": {
+            "Type": "AWS::SNS::Subscription",
+            "Properties": {
+                "Endpoint": {"Fn::GetAtt": [ "SendSmsFunction", "Arn"]},
+                "Protocol": "lambda",
+                "TopicArn": {"Ref": "ReservationsTopic"}
             },
             "DependsOn": ["SendSmsFunction"]
         },
@@ -60,7 +71,8 @@
                 "Handler": "main",
                 "Role": "arn:aws:iam::896764428848:role/sto-psito-lambda-role",
                 "Runtime": "go1.x"
-            }
+            },
+            "DependsOn": ["ReservationsTopic"]
         },
 
         "SendConfirmationEmailsPermission": {
@@ -72,8 +84,18 @@
                     "Fn::GetAtt": ["SendConfirmationEmailsFunction", "Arn"]
                 },
                 "SourceArn": {
-                    "Fn::Join": ["", ["arn:aws:sns:", {"Ref": "AWS::Region"}, ":", {"Ref": "AWS::AccountId"}, ":reservations-topic"]]
+                    "Fn::Join": ["", ["arn:aws:sns:", {"Ref": "AWS::Region"}, ":", {"Ref": "AWS::AccountId"}, ":", {"Fn::GetAtt": ["ReservationsTopic", "TopicName"]}]]
                 }
+            },
+            "DependsOn": ["SendConfirmationEmailsFunction"]
+        },
+
+        "SendConfirmationEmailsSubscription": {
+            "Type": "AWS::SNS::Subscription",
+            "Properties": {
+                "Endpoint": {"Fn::GetAtt": [ "SendConfirmationEmailsFunction", "Arn"]},
+                "Protocol": "lambda",
+                "TopicArn": {"Ref": "ReservationsTopic"}
             },
             "DependsOn": ["SendConfirmationEmailsFunction"]
         }
