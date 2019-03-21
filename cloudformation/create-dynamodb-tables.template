@@ -53,9 +53,9 @@
                 },
                 "SourceArn": {
                     "Fn::Join": ["", ["arn:aws:dynamodb:", {"Ref": "AWS::Region"}, ":", {"Ref": "AWS::AccountId"}, ":table/Reservations/stream/*"]]
-                },
+                }
             },
-            "DependsOn": ["PublishEventFunction"],
+            "DependsOn": ["PublishEventFunction"]
         }
     }
 }

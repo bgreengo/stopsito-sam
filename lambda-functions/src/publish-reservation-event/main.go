@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/sns"
+	"os"
 )
 
 type Reservation struct {
@@ -27,7 +28,7 @@ func publishReservationEvent(reservation Reservation) {
 	reservationJson, _ := json.Marshal(reservation)
 	params := &sns.PublishInput{
 		Message: aws.String(string(reservationJson)),
-		TopicArn: aws.String("arn:aws:sns:eu-west-1:896764428848:reservations"),
+		TopicArn: aws.String(os.Getenv("TOPIC_ARN")),
 	}
 
 	fmt.Printf("Publishing Reservation Event for object %s", string(reservationJson))
