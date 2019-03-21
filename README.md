@@ -1,7 +1,7 @@
 ![](./animations/banner.png)
 
 ## Description
-"Sto Psito" is Greek restaurant located in [Kefalonia, Greece](https://goo.gl/maps/rGNRG2g3ZwP2). First opened in 1990, is still a favourite among locals as well as tourists.
+"Sto Psito" is a Greek restaurant located in [Kefalonia, Greece](https://goo.gl/maps/rGNRG2g3ZwP2). First opened in 1990, is still a favourite among locals as well as tourists.
 
 Last year, the website had: 
 - Hundreds of unique visitors every month,
